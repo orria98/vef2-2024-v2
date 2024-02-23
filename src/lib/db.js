@@ -1,6 +1,7 @@
 import pg from 'pg';
 import { environment } from './environment.js';
 import { logger } from './logger.js';
+import { teams } from '../app.js';
 
 const env = environment(process.env, logger);
 

@@ -4,12 +4,15 @@
  * @returns {Object} - Stöðutaflan
  */
 import { teams } from '../app.js';
+import { insertGame } from './db.js';
+
 
 export function calculateStandings(data) {
   const standings = {};
 
   for (const { games } of data) {
     for (const { home, away } of games) {
+      insertGame(home.name, home.score, away.name, away.score);
       if (!teams.includes(home.name) || !teams.includes(away.name)) {
         continue;
       }
