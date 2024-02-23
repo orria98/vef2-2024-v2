@@ -19,13 +19,22 @@ const records = [
   },
   {
     id: 2,
-    username: 'oli',
-    name: 'Óli',
+    username: 'orri',
+    name: 'Orri',
 
     // 123
     password: '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii',
     admin: false,
   },
+  {
+    id: 3,
+    username: 'orria98',
+    name: 'Orri Antonsson',
+
+    // 123
+    password: '123456',
+    admin: false,
+  }
 ];
 
 export async function comparePasswords(password, user) {
