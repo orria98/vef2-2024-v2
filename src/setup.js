@@ -1,5 +1,4 @@
 import { query } from './lib/db.js';
-require('dotenv').config();
 
 
 async function main() {

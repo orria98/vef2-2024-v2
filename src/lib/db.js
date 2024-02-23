@@ -38,6 +38,15 @@ export async function query(q, values = []) {
   }
 }
 
+export async function getDatabase() {
+  const q = 'select current_database() as name';
+  const result = await query(q);
+
+  if (result && result.rows && result.rows.length > 0) {
+    return result.rows[0].name;
+  }
+}
+
 export async function getGames() {
   const q = `
     SELECT
