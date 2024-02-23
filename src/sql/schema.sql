@@ -1,3 +1,11 @@
+CREATE TABLE public.users (
+  id serial primary key,
+  name CHARACTER VARYING(64) NOT NULL,
+  username CHARACTER VARYING(64) NOT NULL UNIQUE,
+  password CHARACTER VARYING(256) NOT NULL,
+  admin BOOLEAN DEFAULT false
+);
+
 CREATE TABLE IF NOT EXISTS public.teams (
   id serial primary key,
   name varchar(64) not null unique

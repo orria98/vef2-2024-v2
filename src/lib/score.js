@@ -3,7 +3,8 @@
  * @param {Array} data - Upplýsingar um leikina
  * @returns {Object} - Stöðutaflan
  */
-import { teams } from '../generate.js';
+import { teams } from '../app.js';
+
 export function calculateStandings(data) {
   const standings = {};
 

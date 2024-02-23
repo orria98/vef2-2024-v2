@@ -9,10 +9,25 @@ import { handler404, handlerError } from './lib/handlers.js';
 import { logger } from './lib/logger.js';
 import { adminRouter } from './routes/admin-routes.js';
 import { indexRouter } from './routes/index-routes.js';
+import { parseGameday } from './lib/parse.js';
+import { writeFile } from 'fs/promises';
+import {
+  createDirIfNotExists,
+  readFile,
+  readFilesFromDir,
+} from './lib/file.js';
+import { parseTeamsJson } from './lib/parse.js';
+
+
+
 
 import { comparePasswords, findById, findByUsername } from './lib/users.js';
 
 const env = environment(process.env, logger);
+
+const INPUT_DIR = './data';
+const OUTPUT_DIR = './dist';
+let teams = [];
 
 if (!env) {
   process.exit(1);
@@ -33,6 +48,44 @@ const sessionOptions = {
   saveUninitialized: false,
 };
 app.use(session(sessionOptions));
+
+async function main(){
+  await createDirIfNotExists(OUTPUT_DIR);
+
+  const files = await readFilesFromDir(INPUT_DIR);
+  const data = [];
+  teams = []
+
+  for await (const file of files) {
+    if (file.indexOf('gameday') < 0) {
+      continue;
+    }
+    const fileContents = await readFile(file);
+
+    //console.info('parsea skrá', file);
+    if (!fileContents) {
+      continue;
+    }
+
+    const parsed = parseGameday(fileContents);
+
+    if(parsed != null){
+      data.push(parsed);
+    }
+  }
+
+  for await (const file of files){
+    if(file.indexOf('teams') < 0){
+      continue;
+    }
+    const teamFiles = await readFile(file);
+    const parsedTeams = parseTeamsJson(teamFiles);
+
+    teams.push(...parsedTeams);
+
+  }
+
+}
 
 /**
  * Athugar hvort username og password sé til í notandakerfi.
@@ -90,4 +143,6 @@ app.use(handlerError);
 
 app.listen(port, () => {
   console.info(`🚀 Server running at http://localhost:${port}/`);
+
 });
+export { teams };
